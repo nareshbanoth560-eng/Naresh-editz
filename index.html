@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b14">
+<title>Naresh Edits | Video Templates</title>
+<style>
+:root{--bg:#080b14;--panel:#111827;--blue:#168cff;--cyan:#55d6ff;--text:#f4f7ff;--muted:#9ba9c3;--line:#24334b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10264a 0,#080b14 55%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#080b14eF;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.wrap{width:min(1100px,92%);margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 0}
+.brand{font-size:1.25rem;font-weight:900;letter-spacing:.4px}.brand span{color:var(--cyan)}button,.btn{border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(120deg,var(--blue),#6958ff);color:white;font-weight:750;text-decoration:none;cursor:pointer;display:inline-flex;justify-content:center;align-items:center;gap:6px}
+button.secondary,.btn.secondary{background:#1b2940;border:1px solid #314767}.hero{padding:38px 0 22px}.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:2px;font-size:.75rem}.hero h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.06;margin:10px 0}.hero p{color:var(--muted);max-width:620px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.toolbar input{flex:1;min-width:180px}
+input,textarea{width:100%;background:#080e1a;color:var(--text);border:1px solid #2a3b56;border-radius:9px;padding:11px;font:inherit}label{display:block;color:#bdc9df;font-size:.88rem;margin:10px 0 5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:17px;padding:8px 0 35px}.card{background:linear-gradient(150deg,#141f32,#0d1421);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px #0003}.preview{background:#05080e;aspect-ratio:9/16;max-height:340px;display:flex;align-items:center;justify-content:center;overflow:hidden}.preview video{width:100%;height:100%;object-fit:contain}.preview .empty{color:#8293b1;padding:25px;text-align:center}.cardbody{padding:14px}.card h3{margin:0 0 4px;font-size:1.05rem;overflow-wrap:anywhere}.card p{color:var(--muted);font-size:.9rem;white-space:pre-wrap;overflow-wrap:anywhere}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.actions a{font-size:.85rem;padding:10px 6px;text-align:center}.tag{font-size:.72rem;color:var(--cyan);background:#12304d;border-radius:50px;padding:4px 8px;display:inline-block;margin:4px 0}
+.panel{background:#101a2a;border:1px solid #2a3b56;border-radius:16px;padding:18px;margin:10px 0 28px}.panel h2{margin-top:0}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 14px}.hidden{display:none!important}.status{color:var(--cyan);min-height:1.5em}.empty-state{color:var(--muted);padding:25px 0}.foot{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:.82rem}.danger{background:#6b2330!important}.small{font-size:.8rem;color:var(--muted)}
+@media(min-width:760px){.hero{padding-top:55px}.preview{max-height:390px}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><div class="brand">⚡ NARESH <span>EDITS</span></div><button id="adminToggle" class="secondary">Admin Login</button></div></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">VIDEO TEMPLATES • ALIGHT MOTION</div><h1>Make your edits<br><span style="color:var(--cyan)">stand out.</span></h1><p>Preview templates, download video previews, or open the linked Alight Motion project to edit and export it on your phone.</p></section>
+<div class="toolbar"><input id="search" placeholder="Search templates…"><button id="refresh" class="secondary">Refresh</button></div>
+<section id="adminPanel" class="panel hidden">
+<h2>Admin Dashboard</h2><p class="small">Only your signed-in admin account should upload templates. Configure the Supabase policies in the included SQL file before using this site.</p>
+<div id="authArea">
+<div class="formgrid"><div><label for="email">Admin email</label><input id="email" type="email" autocomplete="username" placeholder="Your admin email"></div><div><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Supabase Auth password"></div></div>
+<div class="toolbar"><button id="login">Log in</button><button id="logout" class="secondary hidden">Log out</button></div>
+</div>
+<div id="uploadArea" class="hidden">
+<div class="formgrid">
+<div><label for="title">Template title *</label><input id="title" maxlength="100" placeholder="e.g. Telugu Beat Sync"></div>
+<div><label for="videoFile">Preview / downloadable MP4 *</label><input id="videoFile" type="file" accept="video/mp4,video/*"></div>
+<div><label for="projectUrl">Alight Motion project/share URL</label><input id="projectUrl" type="url" placeholder="Paste the actual project link"></div>
+<div><label for="downloadUrl">Optional external download URL</label><input id="downloadUrl" type="url" placeholder="Optional; leave blank to use uploaded MP4"></div>
+</div>
+<label for="description">Description (optional)</label><textarea id="description" rows="2" maxlength="500" placeholder="Beat, song, instructions…"></textarea>
+<div class="toolbar"><button id="upload">Upload Template</button></div>
+</div><div id="adminStatus" class="status" role="status"></div>
+</section>
+<section><div id="count" class="small">Loading templates…</div><div id="templates" class="grid"></div></section>
+</main>
+<footer class="foot"><div class="wrap">© <span id="year"></span> Naresh Edits · Use only videos and project links you have permission to share.</div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* SETUP: Replace these two placeholders with your Supabase project values.
+   Supabase Dashboard → Project Settings → API → Project URL and anon/public key.
+   NEVER put a service_role key in this file. */
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_PUBLIC_KEY";
+const BUCKET = "templates";
+const TABLE = "templates";
+const configured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("PASTE_") && !SUPABASE_ANON_KEY.includes("PASTE_");
+const $ = id => document.getElementById(id);
+$("year").textContent = new Date().getFullYear();
+let db = null, currentUser = null, items = [];
+if (configured && window.supabase) db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+function status(msg){$("adminStatus").textContent=msg}
+function safeUrl(raw){try{const u=new URL(raw);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}}
+function escapeHtml(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+ const q=$("search").value.trim().toLowerCase();
+ const filtered=items.filter(x=>(x.title+" "+(x.description||"")).toLowerCase().includes(q));
+ $("count").textContent=`${filtered.length} template${filtered.length===1?"":"s"}`;
+ $("templates").innerHTML=filtered.map(x=>{
+   const video=safeUrl(x.video_url), project=safeUrl(x.project_url), external=safeUrl(x.download_url);
+   const download=external||video;
+   return `<article class="card"><div class="preview">${video?`<video src="${escapeHtml(video)}" controls playsinline preload="metadata"></video>`:`<div class="empty">Video preview unavailable</div>`}</div><div class="cardbody"><span class="tag">VIDEO TEMPLATE</span><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.description||"")}</p><div class="actions">${download?`<a class="btn" href="${escapeHtml(download)}" target="_blank" rel="noopener" download>⬇ Download</a>`:`<span></span>`}${project?`<a class="btn secondary" href="${escapeHtml(project)}" target="_blank" rel="noopener">Open Project ↗</a>`:`<a class="btn secondary" href="#" onclick="alert('No Alight Motion project link was added for this template.');return false">No project link</a>`}</div>${currentUser?`<button class="danger" style="width:100%;margin-top:10px" onclick="deleteTemplate('${escapeHtml(x.id)}','${escapeHtml(x.storage_path||"")}')">Delete template</button>`:""}</div></article>`;
+ }).join("")||`<div class="empty-state">No templates found yet. Please check back soon.</div>`;
+}
+async function loadTemplates(){
+ if(!db){$("count").textContent="Setup required";$("templates").innerHTML='<div class="empty-state">Add your Supabase URL and anon key in this HTML file, then follow setup.sql. The website cannot load public templates until configured.</div>';return}
+ $("count").textContent="Loading templates…";
+ const {data,error}=await db.from(TABLE).select("*").order("created_at",{ascending:false});
+ if(error){$("count").textContent="Could not load templates";$("templates").innerHTML=`<p class="empty-state">${escapeHtml(error.message)} — check the SQL setup and table permissions.</p>`;return}
+ items=data||[];render();
+}
+async function updateAuth(){
+ if(!db)return;
+ const {data}=await db.auth.getSession();currentUser=data.session?.user||null;
+ $("login").classList.toggle("hidden",!!currentUser);$("logout").classList.toggle("hidden",!currentUser);
+ $("uploadArea").classList.toggle("hidden",!currentUser);
+ status(currentUser?`Logged in as ${currentUser.email}`:"Log in with your admin account to upload.");
+ render();
+}
+$("adminToggle").onclick=()=>{$("adminPanel").classList.toggle("hidden");$("adminPanel").scrollIntoView({behavior:"smooth",block:"start"})};
+$("search").addEventListener("input",render);$("refresh").onclick=loadTemplates;
+$("login").onclick=async()=>{
+ if(!db){status("First configure Supabase URL and anon key in this HTML file.");return}
+ const email=$("email").value.trim(),password=$("password").value;
+ if(!email||!password){status("Enter your admin email and password.");return}
+ status("Signing in…");
+ const {error}=await db.auth.signInWithPassword({email,password});
+ status(error?error.message:"Login successful.");await updateAuth();if(!error)await loadTemplates();
+};
+$("logout").onclick=async()=>{await db.auth.signOut();status("Logged out.");await updateAuth()};
+$("upload").onclick=async()=>{
+ if(!db||!currentUser){status("Please log in first.");return}
+ const title=$("title").value.trim(),file=$("videoFile").files[0],project=safeUrl($("projectUrl").value.trim()),external=safeUrl($("downloadUrl").value.trim()),description=$("description").value.trim();
+ if(!title||!file){status("Enter a title and choose a video file.");return}
+ if(file.size>150*1024*1024){status("Video is larger than 150 MB. Compress it or use a suitable storage plan.");return}
+ if(!file.type.startsWith("video/")){status("Choose a video file.");return}
+ if($("projectUrl").value.trim()&&!project){status("Project URL must be a valid http/https link.");return}
+ if($("downloadUrl").value.trim()&&!external){status("Download URL must be a valid http/https link.");return}
+ $("upload").disabled=true;status("Uploading video…");
+ const path=`${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
+ const up=await db.storage.from(BUCKET).upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type});
+ if(up.error){status("Video upload failed: "+up.error.message);$("upload").disabled=false;return}
+ const {data:pub}=db.storage.from(BUCKET).getPublicUrl(path);
+ status("Saving template…");
+ const ins=await db.from(TABLE).insert({title,description,video_url:pub.publicUrl,project_url:project||null,download_url:external||null,storage_path:path,created_by:currentUser.id});
+ if(ins.error){await db.storage.from(BUCKET).remove([path]);status("Could not save template: "+ins.error.message+" (check SQL policies).");}
+ else{status("Uploaded successfully! Public visitors can now see it.");$("title").value="";$("description").value="";$("projectUrl").value="";$("downloadUrl").value="";$("videoFile").value="";await loadTemplates()}
+ $("upload").disabled=false;
+};
+window.deleteTemplate=async(id,path)=>{
+ if(!currentUser||!confirm("Delete this template?"))return;
+ const {error}=await db.from(TABLE).delete().eq("id",id);
+ if(error){status("Delete failed: "+error.message);return}
+ if(path)await db.storage.from(BUCKET).remove([path]);
+ status("Template deleted.");await loadTemplates();
+};
+if(db){db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await updateAuth();await loadTemplates()},0)});updateAuth()}
+loadTemplates();
+</script>
+</body></html>
